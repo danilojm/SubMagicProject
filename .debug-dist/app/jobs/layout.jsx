@@ -1,0 +1,11 @@
+import { Header } from '@/components/header';
+export default function JobsLayout(_a) {
+    var children = _a.children;
+    return (<div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        {children}
+      </main>
+    </div>);
+}
+//# sourceMappingURL=layout.jsx.map
