@@ -1,30 +1,35 @@
+"use client";
 
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Video, Eye, EyeOff, Loader2, Check } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Video, Eye, EyeOff, Loader2, Check } from "lucide-react";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const passwordRequirements = [
-    { text: 'At least 6 characters', met: password.length >= 6 },
-    { text: 'Contains a number', met: /\d/.test(password) },
-    { text: 'Contains a letter', met: /[a-zA-Z]/.test(password) },
+    { text: "At least 6 characters", met: password.length >= 6 },
+    { text: "Contains a number", met: /\d/.test(password) },
+    { text: "Contains a letter", met: /[a-zA-Z]/.test(password) },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,22 +37,22 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       setIsLoading(false);
       return;
     }
 
-    if (!passwordRequirements.every(req => req.met)) {
-      toast.error('Please meet all password requirements');
+    if (!passwordRequirements.every((req) => req.met)) {
+      toast.error("Please meet all password requirements");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name,
@@ -59,13 +64,13 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Account created successfully! Please sign in.');
-        router.push('/auth/signin');
+        toast.success("Account created successfully! Please sign in.");
+        router.push("/auth/signin");
       } else {
-        toast.error(data.error || 'Failed to create account');
+        toast.error(data.error || "Failed to create account");
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -79,12 +84,10 @@ export default function SignUpPage() {
           <Link href="/" className="inline-flex items-center space-x-2">
             <Video className="h-10 w-10 text-primary" />
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              SubtitlePro
+              SubMagic
             </span>
           </Link>
-          <p className="mt-2 text-muted-foreground">
-            Create your account
-          </p>
+          <p className="mt-2 text-muted-foreground">Create your account</p>
         </div>
 
         {/* Sign Up Form */}
@@ -128,7 +131,7 @@ export default function SignUpPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -150,18 +153,25 @@ export default function SignUpPage() {
                     )}
                   </Button>
                 </div>
-                
+
                 {/* Password Requirements */}
                 {password && (
                   <div className="space-y-1">
                     {passwordRequirements.map((req, index) => (
-                      <div key={index} className="flex items-center space-x-2 text-xs">
-                        <Check 
+                      <div
+                        key={index}
+                        className="flex items-center space-x-2 text-xs"
+                      >
+                        <Check
                           className={`h-3 w-3 ${
-                            req.met ? 'text-green-500' : 'text-muted-foreground'
-                          }`} 
+                            req.met ? "text-green-500" : "text-muted-foreground"
+                          }`}
                         />
-                        <span className={req.met ? 'text-green-600' : 'text-muted-foreground'}>
+                        <span
+                          className={
+                            req.met ? "text-green-600" : "text-muted-foreground"
+                          }
+                        >
                           {req.text}
                         </span>
                       </div>
@@ -175,7 +185,7 @@ export default function SignUpPage() {
                 <div className="relative">
                   <Input
                     id="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -209,13 +219,15 @@ export default function SignUpPage() {
                     Creating account...
                   </>
                 ) : (
-                  'Create Account'
+                  "Create Account"
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
+              <span className="text-muted-foreground">
+                Already have an account?{" "}
+              </span>
               <Link
                 href="/auth/signin"
                 className="font-medium text-primary hover:underline"

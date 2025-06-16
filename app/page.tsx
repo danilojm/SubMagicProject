@@ -1,40 +1,45 @@
+"use client";
 
-'use client';
-
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Video, 
-  Zap, 
-  Globe, 
-  Shield, 
-  Clock, 
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Video,
+  Zap,
+  Globe,
+  Shield,
+  Clock,
   Users,
   ArrowRight,
   CheckCircle,
   Star,
   Play,
   Download,
-  Languages
-} from 'lucide-react';
-import { motion } from 'framer-motion';
+  Languages,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dashboard');
+    if (status === "authenticated") {
+      router.push("/dashboard");
     }
   }, [status, router]);
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -42,48 +47,54 @@ export default function HomePage() {
     );
   }
 
-  if (status === 'authenticated') {
+  if (status === "authenticated") {
     return null; // Will redirect to dashboard
   }
 
   const features = [
     {
       icon: Zap,
-      title: 'AI-Powered Transcription',
-      description: 'Advanced OpenAI Whisper integration for accurate speech-to-text conversion with 96+ language support.'
+      title: "AI-Powered Transcription",
+      description:
+        "Advanced OpenAI Whisper integration for accurate speech-to-text conversion with 96+ language support.",
     },
     {
       icon: Globe,
-      title: 'Multi-Language Translation',
-      description: 'Professional translation services with Google Translate, DeepL, and Azure Translator integration.'
+      title: "Multi-Language Translation",
+      description:
+        "Professional translation services with Google Translate, DeepL, and Azure Translator integration.",
     },
     {
       icon: Clock,
-      title: 'Real-Time Processing',
-      description: 'Live progress tracking with WebSocket updates and background job processing for seamless workflow.'
+      title: "Real-Time Processing",
+      description:
+        "Live progress tracking with WebSocket updates and background job processing for seamless workflow.",
     },
     {
       icon: Shield,
-      title: 'Enterprise Security',
-      description: 'Secure authentication, encrypted data storage, and compliance-ready infrastructure.'
+      title: "Enterprise Security",
+      description:
+        "Secure authentication, encrypted data storage, and compliance-ready infrastructure.",
     },
     {
       icon: Users,
-      title: 'Collaborative Editing',
-      description: 'Team-based subtitle editing with version control and collaborative review features.'
+      title: "Collaborative Editing",
+      description:
+        "Team-based subtitle editing with version control and collaborative review features.",
     },
     {
       icon: Download,
-      title: 'Multiple Export Formats',
-      description: 'Export subtitles in SRT, VTT, ASS, SSA, and TTML formats for maximum compatibility.'
-    }
+      title: "Multiple Export Formats",
+      description:
+        "Export subtitles in SRT, VTT, ASS, SSA, and TTML formats for maximum compatibility.",
+    },
   ];
 
   const stats = [
-    { label: 'Languages Supported', value: '96+' },
-    { label: 'Accuracy Rate', value: '95%' },
-    { label: 'Processing Speed', value: '10x' },
-    { label: 'Export Formats', value: '5+' }
+    { label: "Languages Supported", value: "96+" },
+    { label: "Accuracy Rate", value: "95%" },
+    { label: "Processing Speed", value: "10x" },
+    { label: "Export Formats", value: "5+" },
   ];
 
   return (
@@ -95,7 +106,7 @@ export default function HomePage() {
             <div className="flex items-center space-x-2">
               <Video className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                SubtitlePro
+                SubMagic
               </span>
             </div>
             <div className="flex items-center space-x-4">
@@ -113,7 +124,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center space-y-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,15 +136,16 @@ export default function HomePage() {
                 Professional Subtitle Generation Platform
               </Badge>
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-                Generate{' '}
+                Generate{" "}
                 <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
                   Professional
-                </span>{' '}
+                </span>{" "}
                 Subtitles with AI
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Transform your videos with AI-powered transcription, multi-language translation, 
-                and professional editing tools. Support for YouTube, file uploads, and real-time processing.
+                Transform your videos with AI-powered transcription,
+                multi-language translation, and professional editing tools.
+                Support for YouTube, file uploads, and real-time processing.
               </p>
             </div>
 
@@ -160,8 +172,12 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
                 >
-                  <div className="text-3xl font-bold text-primary">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-3xl font-bold text-primary">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -172,7 +188,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center space-y-4 mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -183,7 +199,7 @@ export default function HomePage() {
               Everything you need for professional subtitles
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive tools and features designed for content creators, 
+              Comprehensive tools and features designed for content creators,
               businesses, and media professionals.
             </p>
           </motion.div>
@@ -222,7 +238,7 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center space-y-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -234,8 +250,8 @@ export default function HomePage() {
                 Ready to transform your content?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of creators and businesses using SubtitlePro 
-                to make their content accessible worldwide.
+                Join thousands of creators and businesses using SubMagic to make
+                their content accessible worldwide.
               </p>
             </div>
 
@@ -276,10 +292,10 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">
               <Video className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">SubtitlePro</span>
+              <span className="font-bold text-lg">SubMagic</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              © 2024 SubtitlePro. Professional subtitle generation platform.
+              © 2025 SubMagic. Professional subtitle generation platform.
             </div>
           </div>
         </div>

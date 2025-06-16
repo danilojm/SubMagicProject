@@ -1,4 +1,3 @@
-
 # Professional Subtitle Generator
 
 A comprehensive, AI-powered subtitle generation platform built with Next.js 14, featuring advanced transcription, multi-language translation, and professional editing tools.
@@ -6,6 +5,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 ## 🚀 Features
 
 ### Core Functionality
+
 - **Multi-Source Input Support**: YouTube URLs, direct file uploads, other video URLs
 - **AI-Powered Transcription**: OpenAI Whisper integration with multiple model options
 - **Multi-Language Translation**: Support for 40+ languages with multiple providers
@@ -13,6 +13,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 - **Professional Export**: Multiple subtitle formats (SRT, VTT, ASS, SSA, TTML)
 
 ### Advanced Features
+
 - **User Authentication**: Secure login/registration with NextAuth.js
 - **Job Management**: Complete job lifecycle with history and analytics
 - **Project Organization**: Group related jobs into projects
@@ -21,6 +22,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 - **Responsive Design**: Modern UI with dark/light theme support
 
 ### Professional Tools
+
 - **Batch Processing**: Handle multiple files simultaneously
 - **Collaborative Editing**: Team-based subtitle editing (planned)
 - **API Access**: RESTful API for integration
@@ -30,6 +32,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 ## 🛠 Technology Stack
 
 ### Frontend
+
 - **Next.js 14**: React framework with App Router
 - **TypeScript**: Type-safe development
 - **Tailwind CSS**: Utility-first styling
@@ -38,6 +41,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 - **React Hook Form**: Form management with validation
 
 ### Backend
+
 - **Next.js API Routes**: Serverless API endpoints
 - **NextAuth.js**: Authentication and session management
 - **Prisma**: Type-safe database ORM
@@ -45,6 +49,7 @@ A comprehensive, AI-powered subtitle generation platform built with Next.js 14, 
 - **bcryptjs**: Password hashing and security
 
 ### AI/ML Integration (Mocked)
+
 - **OpenAI Whisper**: Speech-to-text transcription
 - **Google Translate**: Multi-language translation
 - **DeepL**: Premium translation service
@@ -64,37 +69,43 @@ The application uses a comprehensive PostgreSQL schema with the following key mo
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - PostgreSQL database
 - Yarn package manager
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd professional-subtitle-generator
    ```
 
 2. **Install dependencies**
+
    ```bash
    cd app
    yarn install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    # Configure your database URL and other settings
    ```
 
 4. **Initialize the database**
+
    ```bash
    npx prisma generate
    npx prisma db push
    ```
 
 5. **Create demo user** (optional)
+
    ```bash
    node scripts/create-demo-user.js
    ```
@@ -105,7 +116,8 @@ The application uses a comprehensive PostgreSQL schema with the following key mo
    ```
 
 ### Demo Account
-- **Email**: demo@subtitlepro.com
+
+- **Email**: demo@submagic.com
 - **Password**: demo123
 
 ## 📁 Project Structure
@@ -140,6 +152,7 @@ professional-subtitle-generator/
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```env
 DATABASE_URL="postgresql://..."
 NEXTAUTH_SECRET="your-secret-key"
@@ -147,7 +160,9 @@ NEXTAUTH_URL="http://localhost:3000"
 ```
 
 ### Prisma Configuration
+
 The database schema supports:
+
 - User authentication and authorization
 - Job processing with real-time status updates
 - Multi-language subtitle generation
@@ -182,12 +197,14 @@ The database schema supports:
 ## 🔌 API Documentation
 
 ### Authentication
+
 ```bash
 POST /api/auth/register
 POST /api/auth/signin
 ```
 
 ### Job Management
+
 ```bash
 GET /api/jobs                    # List jobs
 POST /api/jobs                   # Create job
@@ -197,11 +214,13 @@ POST /api/jobs/[id]/retry       # Retry failed job
 ```
 
 ### Subtitles
+
 ```bash
 GET /api/subtitles/[id]/download # Download subtitle file
 ```
 
 ### Analytics
+
 ```bash
 GET /api/dashboard/stats         # Dashboard statistics
 ```
@@ -209,6 +228,7 @@ GET /api/dashboard/stats         # Dashboard statistics
 ## 🎨 UI/UX Features
 
 ### Design System
+
 - **Modern Interface**: Clean, professional design with consistent spacing
 - **Responsive Layout**: Mobile-first approach with breakpoints
 - **Dark/Light Theme**: Automatic theme switching with user preference
@@ -216,6 +236,7 @@ GET /api/dashboard/stats         # Dashboard statistics
 - **Accessibility**: WCAG compliant with keyboard navigation
 
 ### User Experience
+
 - **Real-Time Updates**: Live progress tracking and status updates
 - **Intuitive Navigation**: Clear information architecture
 - **Error Handling**: Comprehensive error messages and recovery options
@@ -225,12 +246,14 @@ GET /api/dashboard/stats         # Dashboard statistics
 ## 🔒 Security
 
 ### Authentication & Authorization
+
 - **Secure Password Hashing**: bcryptjs with salt rounds
 - **Session Management**: NextAuth.js with JWT tokens
 - **Role-Based Access**: User, Admin, and Moderator roles
 - **API Protection**: Authenticated endpoints with proper validation
 
 ### Data Protection
+
 - **Input Validation**: Zod schema validation on all inputs
 - **SQL Injection Prevention**: Prisma ORM with parameterized queries
 - **XSS Protection**: React's built-in XSS prevention
@@ -239,12 +262,14 @@ GET /api/dashboard/stats         # Dashboard statistics
 ## 📊 Performance
 
 ### Optimization
+
 - **Static Generation**: Pre-rendered pages for better performance
 - **Code Splitting**: Automatic code splitting with Next.js
 - **Image Optimization**: Next.js Image component with lazy loading
 - **Database Indexing**: Optimized database queries with proper indexes
 
 ### Monitoring
+
 - **Job Analytics**: Processing time and quality metrics
 - **Usage Tracking**: User activity and quota monitoring
 - **Error Logging**: Comprehensive error tracking and reporting
@@ -252,18 +277,21 @@ GET /api/dashboard/stats         # Dashboard statistics
 ## 🚀 Deployment
 
 ### Production Build
+
 ```bash
 yarn build
 yarn start
 ```
 
 ### Environment Setup
+
 - Configure production database
 - Set up environment variables
 - Enable SSL/TLS encryption
 - Configure CDN for static assets
 
 ### AWS Deployment (Recommended)
+
 - **Compute**: AWS Lambda or EC2
 - **Database**: AWS RDS PostgreSQL
 - **Storage**: AWS S3 for file uploads
@@ -293,6 +321,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 For support and questions:
+
 - Create an issue on GitHub
 - Check the documentation
 - Contact the development team

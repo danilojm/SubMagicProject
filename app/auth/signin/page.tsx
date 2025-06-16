@@ -1,20 +1,25 @@
+"use client";
 
-'use client';
-
-import { useState } from 'react';
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Video, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { signIn, getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Video, Eye, EyeOff, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -24,21 +29,21 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
       if (result?.error) {
-        toast.error('Invalid credentials. Please try again.');
+        toast.error("Invalid credentials. Please try again.");
       } else {
-        toast.success('Welcome back!');
-        router.push('/dashboard');
+        toast.success("Welcome back!");
+        router.push("/dashboard");
         router.refresh();
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -52,12 +57,10 @@ export default function SignInPage() {
           <Link href="/" className="inline-flex items-center space-x-2">
             <Video className="h-10 w-10 text-primary" />
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              SubtitlePro
+              SubMagic
             </span>
           </Link>
-          <p className="mt-2 text-muted-foreground">
-            Sign in to your account
-          </p>
+          <p className="mt-2 text-muted-foreground">Sign in to your account</p>
         </div>
 
         {/* Sign In Form */}
@@ -88,7 +91,7 @@ export default function SignInPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -119,45 +122,21 @@ export default function SignInPage() {
                     Signing in...
                   </>
                 ) : (
-                  'Sign In'
+                  "Sign In"
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
+              <span className="text-muted-foreground">
+                Don't have an account?{" "}
+              </span>
               <Link
                 href="/auth/signup"
                 className="font-medium text-primary hover:underline"
               >
                 Sign up
               </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Demo Account */}
-        <Card className="border-dashed">
-          <CardContent className="pt-6">
-            <div className="text-center space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Demo Account (for testing)
-              </p>
-              <div className="text-xs space-y-1">
-                <p>Email: demo@subtitlepro.com</p>
-                <p>Password: demo123</p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setEmail('demo@subtitlepro.com');
-                  setPassword('demo123');
-                }}
-                disabled={isLoading}
-              >
-                Use Demo Account
-              </Button>
             </div>
           </CardContent>
         </Card>
