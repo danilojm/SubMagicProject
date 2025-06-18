@@ -1,0 +1,17 @@
+{
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/jobs/[id]/route": "app/api/jobs/[id]/route.js",
+  "/api/jobs/[id]/retry/route": "app/api/jobs/[id]/retry/route.js",
+  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/api/subtitles/[id]/download/route": "app/api/subtitles/[id]/download/route.js",
+  "/api/jobs/route": "app/api/jobs/route.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/page": "app/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/jobs/[id]/page": "app/jobs/[id]/page.js",
+  "/jobs/page": "app/jobs/page.js",
+  "/jobs/new/page": "app/jobs/new/page.js"
+}
