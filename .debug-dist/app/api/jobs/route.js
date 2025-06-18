@@ -40,6 +40,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { jobProcessor } from '@/lib/job-processor';
+import { publishToExchange } from '@/lib/rabbitmq-client'; // Assuming rabbitmq-client.js is in lib
 import { z } from 'zod';
 import { generateJobTitle } from '@/lib/utils';
 var createJobSchema = z.object({
@@ -125,8 +126,14 @@ export function POST(request) {
                 case 5:
                     // Update user usage count
                     _b.sent();
-                    // Start job processing asynchronously
-                    setTimeout(function () { return jobProcessor.processJob(job_1.id); }, 1000);
+                    // Publish job to RabbitMQ
+                    try {
+                        await publishToExchange('jobs_exchange', 'subtitle.new', { jobId: job_1.id });
+                    }
+                    catch (mqError) {
+                        console.error("Failed to publish job to RabbitMQ:", mqError);
+                        // Potentially mark job as needing attention or return an error
+                    }
                     return [2 /*return*/, NextResponse.json({
                             success: true,
                             data: job_1

@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { jobProcessor } from "@/lib/job-processor";
 import { z } from "zod";
 import { generateJobTitle } from "@/lib/utils";
+import { jobProcessor } from "@/lib/job-processor";
 
 const createJobSchema = z.object({
   title: z.string().optional(),
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       data: { usageCount: { increment: 1 } },
     });
 
-    // Start job processing asynchronously
+    // // Start job processing asynchronously
     setTimeout(() => jobProcessor.processJob(job.id), 1000);
 
     return NextResponse.json({
