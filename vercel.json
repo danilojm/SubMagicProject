@@ -1,9 +1,9 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "app/.next",
+  "outputDirectory": "/vercel/path0/.next",
   "installCommand": "npm install",
   "functions": {
-    "app/app/api/**/*.ts": {
+    "app/api/**/*.ts": {
       "maxDuration": 30
     }
   }
