@@ -1,7 +1,0 @@
-{
-    "functions": {
-        "app/api/**/route.t": {
-            "maxDuration": 30
-        }
-    }
-}
