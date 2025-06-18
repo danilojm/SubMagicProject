@@ -3,7 +3,7 @@
   "outputDirectory": ".next",
   "installCommand": "npm install",
   "functions": {
-    "./app/api/**/*.ts": {
+    "api/**/*.ts": {
       "maxDuration": 30
     }
   }
