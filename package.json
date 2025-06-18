@@ -3,11 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NODE_OPTIONS=--inspect && next dev",
-    "dev:debug": "set NODE_OPTIONS=--inspect && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "postinstall": "prisma generate"
   },
   "dependencies": {
