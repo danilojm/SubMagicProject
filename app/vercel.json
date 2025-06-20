@@ -1,9 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "devCommand": "npm run dev",
   "rewrites": [
     {
       "source": "/dashboard/:path*",
@@ -24,20 +21,11 @@
   ],
   "functions": {
     "app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
+      "maxDuration": 30
     },
     "app/api/**/*.js": {
-      "runtime": "nodejs18.x"
+      "maxDuration": 30
     }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
   },
   "headers": [
     {
