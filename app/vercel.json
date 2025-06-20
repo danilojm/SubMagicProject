@@ -3,15 +3,15 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/dashboard/:path*",
+      "source": "/app/dashboard/:path*",
       "destination": "/dashboard/:path*"
     },
     {
-      "source": "/auth/:path*",
+      "source": "/app/auth/:path*",
       "destination": "/auth/:path*"
     },
     {
-      "source": "/jobs/:path*",
+      "source": "/app/jobs/:path*",
       "destination": "/jobs/:path*"
     },
     {
@@ -50,7 +50,7 @@
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/app/api/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
