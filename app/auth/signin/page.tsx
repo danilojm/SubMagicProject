@@ -35,6 +35,10 @@ export default function SignInPage() {
         redirect: false,
       });
 
+      // Adicione logs para debug
+      console.log("Session:", await getSession());
+      console.log("Current URL:", window.location.href);
+
       if (result?.error) {
         toast.error("Invalid credentials. Please try again.");
       } else {
