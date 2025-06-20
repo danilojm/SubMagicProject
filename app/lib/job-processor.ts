@@ -1,4 +1,4 @@
-// JobProcessor.ts - VERSÃO COMPLETA REFATORADA
+// job-processor.ts - FULL REFACTORED VERSION
 import { prisma } from "./db";
 import path from "path";
 import { JobStatus, TranslationProvider } from "./types/common";
