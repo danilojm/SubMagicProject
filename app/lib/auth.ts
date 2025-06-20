@@ -1,4 +1,3 @@
-
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
@@ -66,9 +65,29 @@ export const authOptions: NextAuthOptions = {
         session.user.plan = token.plan as string;
       }
       return session;
+    },
+    // ADICIONE ESTE CALLBACK - É CRUCIAL PARA O REDIRECIONAMENTO
+    async redirect({ url, baseUrl }) {
+      console.log('Redirect callback - URL:', url, 'BaseURL:', baseUrl);
+      
+      // Se é uma URL relativa, concatena com baseUrl
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      
+      // Se é uma URL do mesmo domínio, permite
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      
+      // Fallback - sempre redireciona para dashboard após login
+      return `${baseUrl}/dashboard`;
     }
   },
   pages: {
-    signIn: '/auth/signin'
+    signIn: '/auth/signin',
+    // ADICIONE ESTAS PÁGINAS TAMBÉM
+    error: '/auth/error',
+    signOut: '/auth/signout'
   }
 };

@@ -34,6 +34,12 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
+    fetch("/api/auth/providers")
+      .then((res) => res.json())
+      .then((data) => console.log("Providers:", data))
+      .catch((err) => console.error("Providers error:", err));
+
+      
     if (status === "authenticated") {
       router.push("/dashboard");
     }
