@@ -2,7 +2,7 @@
     "version": 2,
     "framework": "nextjs",
     "functions": {
-        "app/api/**/*.ts": {
+        "src/app/api/**/*.ts": {
             "maxDuration": 30
         }
     }
