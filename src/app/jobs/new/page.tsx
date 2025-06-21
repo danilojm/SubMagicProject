@@ -1,18 +1,23 @@
+"use client";
 
-'use client';
-
-import { useState, useEffect, Suspense } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect, Suspense } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Textarea } from "@/src/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import { Label } from "@/src/components/ui/label";
+import { Badge } from "@/src/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -21,46 +26,56 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/src/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { 
-  Youtube, 
-  Upload, 
-  Link as LinkIcon, 
-  Settings, 
+} from "@/src/components/ui/select";
+import {
+  Youtube,
+  Upload,
+  Link as LinkIcon,
+  Settings,
   Loader2,
   CheckCircle,
   AlertCircle,
   Languages,
   Mic,
-  Globe
-} from 'lucide-react';
-import { SUPPORTED_LANGUAGES, WHISPER_MODELS, TRANSLATION_PROVIDERS } from '@/lib/types';
-import { isValidYouTubeUrl, isValidUrl } from '@/lib/utils';
-import { toast } from 'sonner';
-import { motion } from 'framer-motion';
+  Globe,
+} from "lucide-react";
+import {
+  SUPPORTED_LANGUAGES,
+  WHISPER_MODELS,
+  TRANSLATION_PROVIDERS,
+} from "@/src/lib/types";
+import { isValidYouTubeUrl, isValidUrl } from "@/src/lib/utils";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 const jobSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title too long'),
+  title: z.string().min(1, "Title is required").max(100, "Title too long"),
   description: z.string().optional(),
-  inputType: z.enum(['YOUTUBE_URL', 'VIDEO_FILE', 'AUDIO_FILE', 'OTHER_URL']),
-  inputSource: z.string().min(1, 'Input source is required'),
-  targetLanguages: z.array(z.string()).min(1, 'At least one target language is required'),
-  settings: z.object({
-    whisperModel: z.enum(['tiny', 'base', 'small', 'medium', 'large']).optional(),
-    enableSpeakerDetection: z.boolean().optional(),
-    customVocabulary: z.string().optional(),
-    translationProvider: z.enum(['google', 'deepl', 'azure']).optional(),
-    enableAutoSync: z.boolean().optional(),
-    qualityThreshold: z.number().min(0).max(1).optional(),
-    maxSegmentLength: z.number().min(1).max(300).optional()
-  }).optional()
+  inputType: z.enum(["YOUTUBE_URL", "VIDEO_FILE", "AUDIO_FILE", "OTHER_URL"]),
+  inputSource: z.string().min(1, "Input source is required"),
+  targetLanguages: z
+    .array(z.string())
+    .min(1, "At least one target language is required"),
+  settings: z
+    .object({
+      whisperModel: z
+        .enum(["tiny", "base", "small", "medium", "large"])
+        .optional(),
+      enableSpeakerDetection: z.boolean().optional(),
+      customVocabulary: z.string().optional(),
+      translationProvider: z.enum(["google", "deepl", "azure"]).optional(),
+      enableAutoSync: z.boolean().optional(),
+      qualityThreshold: z.number().min(0).max(1).optional(),
+      maxSegmentLength: z.number().min(1).max(300).optional(),
+    })
+    .optional(),
 });
 
 type JobFormData = z.infer<typeof jobSchema>;
@@ -71,49 +86,53 @@ function NewJobForm() {
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(['en']);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en"]);
 
-  const defaultType = searchParams.get('type');
+  const defaultType = searchParams.get("type");
 
   const form = useForm<JobFormData>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      inputType: defaultType === 'youtube' ? 'YOUTUBE_URL' : 
-                 defaultType === 'file' ? 'VIDEO_FILE' : 'YOUTUBE_URL',
-      inputSource: '',
-      targetLanguages: ['en'],
+      title: "",
+      description: "",
+      inputType:
+        defaultType === "youtube"
+          ? "YOUTUBE_URL"
+          : defaultType === "file"
+          ? "VIDEO_FILE"
+          : "YOUTUBE_URL",
+      inputSource: "",
+      targetLanguages: ["en"],
       settings: {
-        whisperModel: 'base',
+        whisperModel: "base",
         enableSpeakerDetection: false,
-        translationProvider: 'google',
+        translationProvider: "google",
         enableAutoSync: true,
         qualityThreshold: 0.8,
-        maxSegmentLength: 30
-      }
-    }
+        maxSegmentLength: 30,
+      },
+    },
   });
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
     }
   }, [status, router]);
 
-  const inputType = form.watch('inputType');
-  const inputSource = form.watch('inputSource');
+  const inputType = form.watch("inputType");
+  const inputSource = form.watch("inputSource");
 
   const validateInput = (type: string, source: string) => {
     if (!source) return null;
-    
+
     switch (type) {
-      case 'YOUTUBE_URL':
-        return isValidYouTubeUrl(source) ? 'valid' : 'invalid';
-      case 'OTHER_URL':
-        return isValidUrl(source) ? 'valid' : 'invalid';
+      case "YOUTUBE_URL":
+        return isValidYouTubeUrl(source) ? "valid" : "invalid";
+      case "OTHER_URL":
+        return isValidUrl(source) ? "valid" : "invalid";
       default:
-        return 'valid';
+        return "valid";
     }
   };
 
@@ -123,27 +142,27 @@ function NewJobForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/jobs', {
-        method: 'POST',
+      const response = await fetch("/api/jobs", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...data,
-          targetLanguages: selectedLanguages
+          targetLanguages: selectedLanguages,
         }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        toast.success('Job created successfully!');
+        toast.success("Job created successfully!");
         router.push(`/jobs/${result.data.id}`);
       } else {
-        toast.error(result.error || 'Failed to create job');
+        toast.error(result.error || "Failed to create job");
       }
     } catch (error) {
-      toast.error('An error occurred while creating the job');
+      toast.error("An error occurred while creating the job");
     } finally {
       setIsSubmitting(false);
     }
@@ -151,36 +170,36 @@ function NewJobForm() {
 
   const inputTypes = [
     {
-      value: 'YOUTUBE_URL',
-      label: 'YouTube URL',
+      value: "YOUTUBE_URL",
+      label: "YouTube URL",
       icon: Youtube,
-      description: 'Generate subtitles from YouTube videos',
-      placeholder: 'https://www.youtube.com/watch?v=...'
+      description: "Generate subtitles from YouTube videos",
+      placeholder: "https://www.youtube.com/watch?v=...",
     },
     {
-      value: 'VIDEO_FILE',
-      label: 'Video File',
+      value: "VIDEO_FILE",
+      label: "Video File",
       icon: Upload,
-      description: 'Upload video files (MP4, AVI, MOV, etc.)',
-      placeholder: 'Select or drag video file'
+      description: "Upload video files (MP4, AVI, MOV, etc.)",
+      placeholder: "Select or drag video file",
     },
     {
-      value: 'AUDIO_FILE',
-      label: 'Audio File',
+      value: "AUDIO_FILE",
+      label: "Audio File",
       icon: Mic,
-      description: 'Upload audio files (MP3, WAV, M4A, etc.)',
-      placeholder: 'Select or drag audio file'
+      description: "Upload audio files (MP3, WAV, M4A, etc.)",
+      placeholder: "Select or drag audio file",
     },
     {
-      value: 'OTHER_URL',
-      label: 'Other URL',
+      value: "OTHER_URL",
+      label: "Other URL",
       icon: LinkIcon,
-      description: 'Direct links to video/audio files',
-      placeholder: 'https://example.com/video.mp4'
-    }
+      description: "Direct links to video/audio files",
+      placeholder: "https://example.com/video.mp4",
+    },
   ];
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -188,7 +207,7 @@ function NewJobForm() {
     );
   }
 
-  if (status === 'unauthenticated') {
+  if (status === "unauthenticated") {
     return null;
   }
 
@@ -202,7 +221,8 @@ function NewJobForm() {
       >
         <h1 className="text-3xl font-bold">Create New Subtitle Job</h1>
         <p className="text-muted-foreground mt-2">
-          Generate professional subtitles with AI-powered transcription and translation
+          Generate professional subtitles with AI-powered transcription and
+          translation
         </p>
       </motion.div>
 
@@ -236,15 +256,17 @@ function NewJobForm() {
                                 key={type.value}
                                 className={`p-4 border rounded-lg cursor-pointer transition-all ${
                                   field.value === type.value
-                                    ? 'border-primary bg-primary/5'
-                                    : 'border-border hover:border-primary/50'
+                                    ? "border-primary bg-primary/5"
+                                    : "border-border hover:border-primary/50"
                                 }`}
                                 onClick={() => field.onChange(type.value)}
                               >
                                 <div className="flex items-start space-x-3">
                                   <Icon className="h-6 w-6 text-primary mt-1" />
                                   <div className="flex-1">
-                                    <h3 className="font-medium">{type.label}</h3>
+                                    <h3 className="font-medium">
+                                      {type.label}
+                                    </h3>
                                     <p className="text-sm text-muted-foreground">
                                       {type.description}
                                     </p>
@@ -286,26 +308,35 @@ function NewJobForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {inputTypes.find(t => t.value === inputType)?.label} Source
+                        {inputTypes.find((t) => t.value === inputType)?.label}{" "}
+                        Source
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             {...field}
-                            placeholder={inputTypes.find(t => t.value === inputType)?.placeholder}
-                            className={inputValidation === 'invalid' ? 'border-red-500' : ''}
+                            placeholder={
+                              inputTypes.find((t) => t.value === inputType)
+                                ?.placeholder
+                            }
+                            className={
+                              inputValidation === "invalid"
+                                ? "border-red-500"
+                                : ""
+                            }
                           />
-                          {inputValidation === 'valid' && (
+                          {inputValidation === "valid" && (
                             <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-500" />
                           )}
-                          {inputValidation === 'invalid' && (
+                          {inputValidation === "invalid" && (
                             <AlertCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-red-500" />
                           )}
                         </div>
                       </FormControl>
-                      {inputValidation === 'invalid' && (
+                      {inputValidation === "invalid" && (
                         <FormDescription className="text-red-600">
-                          Please enter a valid {inputType === 'YOUTUBE_URL' ? 'YouTube URL' : 'URL'}
+                          Please enter a valid{" "}
+                          {inputType === "YOUTUBE_URL" ? "YouTube URL" : "URL"}
                         </FormDescription>
                       )}
                       <FormMessage />
@@ -320,7 +351,10 @@ function NewJobForm() {
                     <FormItem>
                       <FormLabel>Job Title</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter a descriptive title for this job" />
+                        <Input
+                          {...field}
+                          placeholder="Enter a descriptive title for this job"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -334,8 +368,8 @@ function NewJobForm() {
                     <FormItem>
                       <FormLabel>Description (Optional)</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          {...field} 
+                        <Textarea
+                          {...field}
                           placeholder="Add any additional notes or context for this job"
                           rows={3}
                         />
@@ -372,12 +406,14 @@ function NewJobForm() {
                         key={code}
                         className={`p-2 border rounded cursor-pointer transition-all text-sm ${
                           selectedLanguages.includes(code)
-                            ? 'border-primary bg-primary/5 text-primary'
-                            : 'border-border hover:border-primary/50'
+                            ? "border-primary bg-primary/5 text-primary"
+                            : "border-border hover:border-primary/50"
                         }`}
                         onClick={() => {
                           if (selectedLanguages.includes(code)) {
-                            setSelectedLanguages(selectedLanguages.filter(l => l !== code));
+                            setSelectedLanguages(
+                              selectedLanguages.filter((l) => l !== code)
+                            );
                           } else {
                             setSelectedLanguages([...selectedLanguages, code]);
                           }
@@ -392,13 +428,19 @@ function NewJobForm() {
                       </div>
                     ))}
                   </div>
-                  
+
                   {selectedLanguages.length > 0 && (
                     <div className="flex flex-wrap gap-2">
-                      <span className="text-sm text-muted-foreground">Selected:</span>
-                      {selectedLanguages.map(code => (
+                      <span className="text-sm text-muted-foreground">
+                        Selected:
+                      </span>
+                      {selectedLanguages.map((code) => (
                         <Badge key={code} variant="secondary">
-                          {SUPPORTED_LANGUAGES[code as keyof typeof SUPPORTED_LANGUAGES]}
+                          {
+                            SUPPORTED_LANGUAGES[
+                              code as keyof typeof SUPPORTED_LANGUAGES
+                            ]
+                          }
                         </Badge>
                       ))}
                     </div>
@@ -431,7 +473,7 @@ function NewJobForm() {
                     variant="outline"
                     onClick={() => setShowAdvanced(!showAdvanced)}
                   >
-                    {showAdvanced ? 'Hide' : 'Show'} Advanced
+                    {showAdvanced ? "Hide" : "Show"} Advanced
                   </Button>
                 </div>
               </CardHeader>
@@ -444,22 +486,29 @@ function NewJobForm() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Whisper Model</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select model" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {Object.entries(WHISPER_MODELS).map(([key, model]) => (
-                                <SelectItem key={key} value={key}>
-                                  {model.name} - {model.size} ({model.accuracy})
-                                </SelectItem>
-                              ))}
+                              {Object.entries(WHISPER_MODELS).map(
+                                ([key, model]) => (
+                                  <SelectItem key={key} value={key}>
+                                    {model.name} - {model.size} (
+                                    {model.accuracy})
+                                  </SelectItem>
+                                )
+                              )}
                             </SelectContent>
                           </Select>
                           <FormDescription>
-                            Larger models provide better accuracy but take longer to process
+                            Larger models provide better accuracy but take
+                            longer to process
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -472,18 +521,23 @@ function NewJobForm() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Translation Provider</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select provider" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {Object.entries(TRANSLATION_PROVIDERS).map(([key, provider]) => (
-                                <SelectItem key={key} value={key}>
-                                  {provider.name} ({provider.quality})
-                                </SelectItem>
-                              ))}
+                              {Object.entries(TRANSLATION_PROVIDERS).map(
+                                ([key, provider]) => (
+                                  <SelectItem key={key} value={key}>
+                                    {provider.name} ({provider.quality})
+                                  </SelectItem>
+                                )
+                              )}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -499,14 +553,15 @@ function NewJobForm() {
                       <FormItem>
                         <FormLabel>Custom Vocabulary (Optional)</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            {...field} 
+                          <Textarea
+                            {...field}
                             placeholder="Enter custom words or phrases (one per line) to improve recognition accuracy"
                             rows={3}
                           />
                         </FormControl>
                         <FormDescription>
-                          Add technical terms, names, or specific vocabulary that might appear in your content
+                          Add technical terms, names, or specific vocabulary
+                          that might appear in your content
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -524,11 +579,15 @@ function NewJobForm() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Button type="button" variant="outline" onClick={() => router.back()}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+            >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSubmitting || selectedLanguages.length === 0}
               size="lg"
             >
@@ -553,11 +612,13 @@ function NewJobForm() {
 
 export default function NewJobPage() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        </div>
+      }
+    >
       <NewJobForm />
     </Suspense>
   );

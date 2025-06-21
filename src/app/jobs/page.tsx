@@ -1,19 +1,24 @@
+"use client";
 
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
+import { Progress } from "@/src/components/ui/progress";
+import {
+  Plus,
+  Search,
+  Filter,
   MoreHorizontal,
   Eye,
   Download,
@@ -21,37 +26,37 @@ import {
   RefreshCw,
   Calendar,
   Clock,
-  FileText
-} from 'lucide-react';
+  FileText,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Job } from '@/lib/types';
-import { formatDate, formatDuration, getStatusColor } from '@/lib/utils';
-import { toast } from 'sonner';
-import { motion } from 'framer-motion';
+} from "@/src/components/ui/dropdown-menu";
+import { Job } from "@/src/lib/types";
+import { formatDate, formatDuration, getStatusColor } from "@/src/lib/utils";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 export default function JobsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
       return;
     }
 
-    if (status === 'authenticated') {
+    if (status === "authenticated") {
       fetchJobs();
     }
   }, [status, router, page, statusFilter]);
@@ -60,8 +65,8 @@ export default function JobsPage() {
     try {
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: '10',
-        ...(statusFilter !== 'all' && { status: statusFilter })
+        limit: "10",
+        ...(statusFilter !== "all" && { status: statusFilter }),
       });
 
       const response = await fetch(`/api/jobs?${params}`);
@@ -71,55 +76,56 @@ export default function JobsPage() {
         setTotalPages(data.data.pagination.pages);
       }
     } catch (error) {
-      console.error('Failed to fetch jobs:', error);
-      toast.error('Failed to load jobs');
+      console.error("Failed to fetch jobs:", error);
+      toast.error("Failed to load jobs");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDeleteJob = async (jobId: string) => {
-    if (!confirm('Are you sure you want to delete this job?')) return;
+    if (!confirm("Are you sure you want to delete this job?")) return;
 
     try {
       const response = await fetch(`/api/jobs/${jobId}`, {
-        method: 'DELETE'
+        method: "DELETE",
       });
 
       if (response.ok) {
-        toast.success('Job deleted successfully');
+        toast.success("Job deleted successfully");
         fetchJobs();
       } else {
-        toast.error('Failed to delete job');
+        toast.error("Failed to delete job");
       }
     } catch (error) {
-      toast.error('Failed to delete job');
+      toast.error("Failed to delete job");
     }
   };
 
   const handleRetryJob = async (jobId: string) => {
     try {
       const response = await fetch(`/api/jobs/${jobId}/retry`, {
-        method: 'POST'
+        method: "POST",
       });
 
       if (response.ok) {
-        toast.success('Job retry initiated');
+        toast.success("Job retry initiated");
         fetchJobs();
       } else {
-        toast.error('Failed to retry job');
+        toast.error("Failed to retry job");
       }
     } catch (error) {
-      toast.error('Failed to retry job');
+      toast.error("Failed to retry job");
     }
   };
 
-  const filteredJobs = jobs.filter(job =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.inputSource.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.inputSource.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (status === 'loading' || isLoading) {
+  if (status === "loading" || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -127,7 +133,7 @@ export default function JobsPage() {
     );
   }
 
-  if (status === 'unauthenticated') {
+  if (status === "unauthenticated") {
     return null;
   }
 
@@ -174,24 +180,24 @@ export default function JobsPage() {
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
               <Filter className="mr-2 h-4 w-4" />
-              Status: {statusFilter === 'all' ? 'All' : statusFilter}
+              Status: {statusFilter === "all" ? "All" : statusFilter}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setStatusFilter('all')}>
+            <DropdownMenuItem onClick={() => setStatusFilter("all")}>
               All Statuses
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setStatusFilter('COMPLETED')}>
+            <DropdownMenuItem onClick={() => setStatusFilter("COMPLETED")}>
               Completed
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setStatusFilter('PROCESSING')}>
+            <DropdownMenuItem onClick={() => setStatusFilter("PROCESSING")}>
               Processing
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setStatusFilter('FAILED')}>
+            <DropdownMenuItem onClick={() => setStatusFilter("FAILED")}>
               Failed
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setStatusFilter('QUEUED')}>
+            <DropdownMenuItem onClick={() => setStatusFilter("QUEUED")}>
               Queued
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -211,7 +217,9 @@ export default function JobsPage() {
               <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">No jobs found</h3>
               <p className="text-muted-foreground">
-                {searchTerm ? 'Try adjusting your search terms' : 'Create your first subtitle generation job'}
+                {searchTerm
+                  ? "Try adjusting your search terms"
+                  : "Create your first subtitle generation job"}
               </p>
               <Button className="mt-4" asChild>
                 <Link href="/jobs/new">
@@ -244,7 +252,7 @@ export default function JobsPage() {
                           <Calendar className="mr-1 h-3 w-3" />
                           {formatDate(new Date(job.createdAt))}
                         </span>
-                        <span>{job.inputType.replace('_', ' ')}</span>
+                        <span>{job.inputType.replace("_", " ")}</span>
                         <span>{job.targetLanguages.length} languages</span>
                         {job.duration && (
                           <span className="flex items-center">
@@ -267,22 +275,28 @@ export default function JobsPage() {
                             View Details
                           </Link>
                         </DropdownMenuItem>
-                        {job.status === 'COMPLETED' && job.subtitles && job.subtitles.length > 0 && (
-                          <DropdownMenuItem asChild>
-                            <Link href={`/api/subtitles/${job.subtitles[0].id}/download`}>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download
-                            </Link>
-                          </DropdownMenuItem>
-                        )}
-                        {job.status === 'FAILED' && (
-                          <DropdownMenuItem onClick={() => handleRetryJob(job.id)}>
+                        {job.status === "COMPLETED" &&
+                          job.subtitles &&
+                          job.subtitles.length > 0 && (
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={`/api/subtitles/${job.subtitles[0].id}/download`}
+                              >
+                                <Download className="mr-2 h-4 w-4" />
+                                Download
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
+                        {job.status === "FAILED" && (
+                          <DropdownMenuItem
+                            onClick={() => handleRetryJob(job.id)}
+                          >
                             <RefreshCw className="mr-2 h-4 w-4" />
                             Retry
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           onClick={() => handleDeleteJob(job.id)}
                           className="text-red-600"
                         >
@@ -296,25 +310,30 @@ export default function JobsPage() {
                 <CardContent>
                   <div className="space-y-3">
                     <div className="text-sm text-muted-foreground">
-                      <span className="font-medium">Source:</span> {job.inputSource}
+                      <span className="font-medium">Source:</span>{" "}
+                      {job.inputSource}
                     </div>
                     {job.description && (
                       <div className="text-sm text-muted-foreground">
-                        <span className="font-medium">Description:</span> {job.description}
+                        <span className="font-medium">Description:</span>{" "}
+                        {job.description}
                       </div>
                     )}
-                    {job.status !== 'COMPLETED' && job.status !== 'FAILED' && job.status !== 'CANCELLED' && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Progress</span>
-                          <span>{job.progress}%</span>
+                    {job.status !== "COMPLETED" &&
+                      job.status !== "FAILED" &&
+                      job.status !== "CANCELLED" && (
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Progress</span>
+                            <span>{job.progress}%</span>
+                          </div>
+                          <Progress value={job.progress} className="h-2" />
                         </div>
-                        <Progress value={job.progress} className="h-2" />
-                      </div>
-                    )}
+                      )}
                     {job.errorMessage && (
                       <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
-                        <span className="font-medium">Error:</span> {job.errorMessage}
+                        <span className="font-medium">Error:</span>{" "}
+                        {job.errorMessage}
                       </div>
                     )}
                   </div>

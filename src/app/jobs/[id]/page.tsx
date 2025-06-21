@@ -4,17 +4,17 @@ import { useEffect, useState, use } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/src/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+} from "@/src/components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
+import { Progress } from "@/src/components/ui/progress";
+import { Separator } from "@/src/components/ui/separator";
 import {
   ArrowLeft,
   Download,
@@ -32,18 +32,18 @@ import {
   Eye,
   Edit,
 } from "lucide-react";
-import { Job } from "@/lib/types";
+import { Job } from "@/src/lib/types";
 import {
   formatDate,
   formatDuration,
   getStatusColor,
   formatFileSize,
-} from "@/lib/utils";
+} from "@/src/lib/utils";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 // Add these imports at the top
-import { SubtitlePreviewModal } from "@/components/ui/subtitle-preview-modal";
+import { SubtitlePreviewModal } from "@/src/components/ui/subtitle-preview-modal";
 
 export default function JobDetailPage({
   params,

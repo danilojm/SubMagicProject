@@ -7,11 +7,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+} from "@/src/components/ui/dialog";
+import { Button } from "@/src/components/ui/button";
+import { Badge } from "@/src/components/ui/badge";
 import { Download } from "lucide-react";
-import { Subtitle } from "@/lib/types";
+import { Subtitle } from "@/src/lib/types";
 import { toast } from "sonner";
 
 import Scrollbars from "react-scrollbars-custom";

@@ -1,36 +1,35 @@
+"use client";
 
-'use client';
-
-import { useState } from 'react';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/theme-toggle';
-import { 
-  Video, 
-  Menu, 
-  X, 
-  User, 
-  Settings, 
+import { useState } from "react";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import { Button } from "@/src/components/ui/button";
+import { ThemeToggle } from "@/src/components/theme-toggle";
+import {
+  Video,
+  Menu,
+  X,
+  User,
+  Settings,
   LogOut,
   BarChart3,
-  FileText
-} from 'lucide-react';
+  FileText,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/src/components/ui/dropdown-menu";
 
 export function Header() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-    { name: 'Jobs', href: '/jobs', icon: FileText },
+    { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
+    { name: "Jobs", href: "/jobs", icon: FileText },
   ];
 
   return (
@@ -67,13 +66,16 @@ export function Header() {
           {/* Right side */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            
+
             {session ? (
               <>
                 {/* User Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Button
+                      variant="ghost"
+                      className="relative h-8 w-8 rounded-full"
+                    >
                       <User className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -106,7 +108,7 @@ export function Header() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onSelect={() => signOut({ callbackUrl: '/' })}
+                      onSelect={() => signOut({ callbackUrl: "/" })}
                     >
                       <LogOut className="mr-2 h-4 w-4" />
                       Sign out

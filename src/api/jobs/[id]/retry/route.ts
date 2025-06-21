@@ -2,9 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/db";
-import { jobProcessor } from "@/lib/job-processor";
+import { authOptions } from "@/src/lib/auth";
+import { prisma } from "@/src/lib/db";
+import { jobProcessor } from "@/src/lib/job-processor";
 
 export async function POST(
   request: NextRequest,

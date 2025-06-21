@@ -2,11 +2,11 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { authOptions } from "@/src/lib/auth";
+import { prisma } from "@/src/lib/db";
 import { z } from "zod";
-import { generateJobTitle } from "@/lib/utils";
-import { jobProcessor } from "@/lib/job-processor";
+import { generateJobTitle } from "@/src/lib/utils";
+import { jobProcessor } from "@/src/lib/job-processor";
 
 const createJobSchema = z.object({
   title: z.string().optional(),
