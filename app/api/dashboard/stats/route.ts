@@ -8,6 +8,13 @@ import { prisma } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
+
+    console.log('Fetching dashboard stats...');
+    console.log('Request URL:', request.url);
+    console.log('Request Method:', request.method);
+    console.log('Request Headers:', request.headers);
+    console.log('Auth Options:', authOptions)
+    
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
